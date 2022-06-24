@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xiaowodi.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Git介绍分布式版本控制工具 VS 集中式版本控制 Git安装Git命令基于开发案例，详细讲解git 的常用命令 版本穿梭123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960命令git reflog 可以查看当前本地库的版本提交状">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git学习随手记">
+<meta property="og:url" content="https://xiaowodi.github.io/2022/06/24/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Git介绍分布式版本控制工具 VS 集中式版本控制 Git安装Git命令基于开发案例，详细讲解git 的常用命令 版本穿梭123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960命令git reflog 可以查看当前本地库的版本提交状">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/xiaowodi/Resources/blob/main/images/gitImages/1.png?raw=true">
+<meta property="og:image" content="https://github.com/xiaowodi/Resources/blob/main/images/gitImages/2.png?raw=true">
+<meta property="og:image" content="https://github.com/xiaowodi/Resources/blob/main/images/gitImages/3.png?raw=true">
+<meta property="og:image" content="https://github.com/xiaowodi/Resources/blob/main/images/gitImages/4.png?raw=true">
+<meta property="article:published_time" content="2022-06-24T08:12:10.618Z">
+<meta property="article:modified_time" content="2022-06-24T08:12:10.618Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/xiaowodi/Resources/blob/main/images/gitImages/1.png?raw=true">
+
+<link rel="canonical" href="https://xiaowodi.github.io/2022/06/24/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Git学习随手记 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://xiaowodi.github.io/2022/06/24/Git%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git学习随手记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-24 08:12:10" itemprop="dateCreated datePublished" datetime="2022-06-24T08:12:10+00:00">2022-06-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Git介绍"><a href="#Git介绍" class="headerlink" title="Git介绍"></a>Git介绍</h3><p>分布式版本控制工具 VS 集中式版本控制</p>
+<h3 id="Git安装"><a href="#Git安装" class="headerlink" title="Git安装"></a>Git安装</h3><h3 id="Git命令"><a href="#Git命令" class="headerlink" title="Git命令"></a>Git命令</h3><p>基于开发案例，详细讲解git 的常用命令</p>
+<h3 id="版本穿梭"><a href="#版本穿梭" class="headerlink" title="版本穿梭"></a>版本穿梭</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">命令git reflog 可以查看当前本地库的版本提交状态， 每个版本的地址引用，通过这个地址，我们可以进行版本穿梭</span><br><span class="line">== git reflog （简略信息版）</span><br><span class="line"></span><br><span class="line">b7a61e6 (HEAD -&gt; master) HEAD@&#123;0&#125;: checkout: moving from hot-fix to master</span><br><span class="line">c813c2a (hot-fix) HEAD@&#123;1&#125;: checkout: moving from master to hot-fix</span><br><span class="line">b7a61e6 (HEAD -&gt; master) HEAD@&#123;2&#125;: commit (merge): merge</span><br><span class="line">98c9077 HEAD@&#123;3&#125;: checkout: moving from hot-fix to master</span><br><span class="line">c813c2a (hot-fix) HEAD@&#123;4&#125;: commit: hot-fix commit</span><br><span class="line">aeb4bd5 HEAD@&#123;5&#125;: checkout: moving from master to hot-fix</span><br><span class="line">98c9077 HEAD@&#123;6&#125;: commit: master test</span><br><span class="line">aeb4bd5 HEAD@&#123;7&#125;: merge hot-fix: Fast-forward</span><br><span class="line">1a3ca2e HEAD@&#123;8&#125;: checkout: moving from hot-fix to master</span><br><span class="line">aeb4bd5 HEAD@&#123;9&#125;: commit: hot-fix first commit hello.txt</span><br><span class="line">1a3ca2e HEAD@&#123;10&#125;: checkout: moving from master to hot-fix</span><br><span class="line">1a3ca2e HEAD@&#123;11&#125;: reset: moving to 1a3ca2e</span><br><span class="line">087386a HEAD@&#123;12&#125;: commit: third commit hello.txt</span><br><span class="line">1a3ca2e HEAD@&#123;13&#125;: commit: second commit hello.txt</span><br><span class="line">afdb66a HEAD@&#123;14&#125;: commit (initial): first commit hello.txt</span><br><span class="line"></span><br><span class="line">== git log  (详细信息版)</span><br><span class="line">commit b7a61e67ea93e3705b06d47baaab95456caf03ab (HEAD -&gt; master)</span><br><span class="line">Merge: 98c9077 c813c2a</span><br><span class="line">Author: yulu &lt;2723946289@qq.com&gt;</span><br><span class="line">Date:   Sun May 9 01:11:53 2021 +0800</span><br><span class="line"></span><br><span class="line">    merge</span><br><span class="line"></span><br><span class="line">commit c813c2a329b9ca158421ddb9178c2d4111678cc8 (hot-fix)</span><br><span class="line">Author: yulu &lt;2723946289@qq.com&gt;</span><br><span class="line">Date:   Sun May 9 01:08:02 2021 +0800</span><br><span class="line"></span><br><span class="line">    hot-fix commit</span><br><span class="line"></span><br><span class="line">commit 98c9077bfe85e15065502271722f0731fd7d7c81</span><br><span class="line">Author: yulu &lt;2723946289@qq.com&gt;</span><br><span class="line">Date:   Sun May 9 01:07:01 2021 +0800</span><br><span class="line"></span><br><span class="line">    master test</span><br><span class="line"></span><br><span class="line">commit aeb4bd56e09974ebc1499531eb7caefbc03010c6</span><br><span class="line">Author: yulu &lt;2723946289@qq.com&gt;</span><br><span class="line">Date:   Sun May 9 01:01:48 2021 +0800</span><br><span class="line"></span><br><span class="line">    hot-fix first commit hello.txt</span><br><span class="line"></span><br><span class="line">commit 1a3ca2e393f832c36b02bbdffef7896b48826e0a</span><br><span class="line">Author: yulu &lt;2723946289@qq.com&gt;</span><br><span class="line">Date:   Sun May 9 00:39:40 2021 +0800</span><br><span class="line"></span><br><span class="line">    second commit hello.txt</span><br><span class="line"></span><br><span class="line">commit afdb66ab517b91b429e68dd181ca8ed00f7e05e5</span><br><span class="line">Author: yulu &lt;2723946289@qq.com&gt;</span><br><span class="line">Date:   Sun May 9 00:35:50 2021 +0800</span><br><span class="line"></span><br><span class="line">    first commit hello.txt</span><br><span class="line"></span><br><span class="line">通过 git reset --hard 穿梭的版本地址 可以进行版本穿梭</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="Git分支"><a href="#Git分支" class="headerlink" title="Git分支"></a>Git分支</h3><p>分支特性、分支创建、分支转换、分支合并、代码合并冲突解决</p>
+<p>git的分支操作其实实际上就是操纵两个重要的指针：</p>
+<ol>
+<li>HEAD指向分支的指针</li>
+<li>Master（具体分支）指向版本的指针</li>
+</ol>
+<blockquote>
+<p>在分支merge时， 我们当前所在的分支为我们的目标的分支， 通过git merge命令可以将指定的分支合并到 <strong>当前所在的分支</strong></p>
+</blockquote>
+<h4 id="分支冲突"><a href="#分支冲突" class="headerlink" title="分支冲突"></a>分支冲突</h4><p>当两个分支进行合并时，如果两个分支在<font color=red>同一文件的同一个位置</font>有两套完全不同的修改，git无法替我们决定使用哪一个。必须人为决定新代码的内容。（需要人为修改当前分支下的产生冲突的文件）</p>
+<p>例如：</p>
+<ol>
+<li>master 分支 当前版本 的hello.txt文件的内容：</li>
+</ol>
+<blockquote>
+<p>hello world    10</p>
+<p>hello world    20</p>
+<p>hello world</p>
+<p>hello world</p>
+<p>hello world</p>
+<p>hello world master test</p>
+<p>hello world</p>
+</blockquote>
+<ol start="2">
+<li>Hot-fix 分支 当前版本 的hello.txt文件的内容：</li>
+</ol>
+<blockquote>
+<p>hello world    10</p>
+<p>hello world    20</p>
+<p>hello world</p>
+<p>hello world</p>
+<p>hello world</p>
+<p>hello world</p>
+<p>hello world hot-fix test</p>
+</blockquote>
+<p>这样这两个分支在合并的时候，就会产生合并冲突，无法自动进行分支合并，我们需要在执行 git merge hot-fix之后，人为的修改master分支下的hello.txt文件</p>
+<p>执行完命令之后，hello.txt文件中会多出两个版本的信息，我们人为的修改我们想要保留的信息，然后add，commit（不加文件名）即可</p>
+<h3 id="Git-团队协作机制"><a href="#Git-团队协作机制" class="headerlink" title="Git 团队协作机制"></a>Git 团队协作机制</h3><h4 id="团队内协作"><a href="#团队内协作" class="headerlink" title="团队内协作"></a>团队内协作</h4><p><img src="https://github.com/xiaowodi/Resources/blob/main/images/gitImages/1.png?raw=true" alt="1.png"></p>
+<p>形象的比喻：</p>
+<p>岳不群，将自己本地库的<strong>华山剑法 <strong>push（推送）到</strong>远程库</strong></p>
+<p>令狐冲就可以从<strong>自己团队的远程库中</strong>==clone==这套华山剑法到自己的<strong>本地库</strong>进行剑法的修炼，在练剑的同时，令狐冲有新研究出两招剑式，添加到自己的本地库中，令狐冲通过push，再将修改后的代码push到团队的远程库中(<font color=red>需要团队内的权限才可以push成功</font>)</p>
+<p>岳不群再从远程库pull拉去修改后的华山剑法</p>
+<h4 id="跨团队协作"><a href="#跨团队协作" class="headerlink" title="跨团队协作"></a>跨团队协作</h4><p><img src="https://github.com/xiaowodi/Resources/blob/main/images/gitImages/2.png?raw=true" alt="2.png"></p>
+<p>形象的例子：</p>
+<p>令狐冲和岳不群：都觉得华山剑法不太精妙， 于是令狐冲找来了东方不败，将<strong>华山剑法</strong>升级为<strong>辟邪剑法</strong></p>
+<p>这就会有两种情况：</p>
+<p>​        1：将东方不败加入到自己的团队（<font color=green>东方不败有自己的团队，堂堂日月神教CEO岂能加入到小小的华山派</font>）</p>
+<p>​        2: 东方不败跨团队协助令狐冲完成华山剑法的升级</p>
+<p>针对第二种情况：</p>
+<p>​    首先：东方不败需要从<strong>岳不群的远程库</strong> <font color=red>fork</font>出一份岳不群的远程库， fork成自己的远程库</p>
+<p>​    然后：东方不败从自己的远程库 将华山剑法 clone下来，升级完成之后，在push到自己的远程库</p>
+<p>​    接下来：提交pr：pull request拉去请求（东方不败的远程库向岳不群的远程库<strong>提交pr请求</strong>，待岳不群进行<strong>审核</strong>完成之后进行两个远程库的<strong>合并</strong>）</p>
+<p>​    最后：两个不同团队之间的远程库合并完成之后，岳不群就可以拉去 <strong>辟邪剑法</strong>，进行<strong>自宫修炼</strong></p>
+<h4 id="远程库创建别名"><a href="#远程库创建别名" class="headerlink" title="远程库创建别名"></a>远程库创建别名</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">git remote -v 查看当前已经配置的远程库别名</span><br><span class="line"></span><br><span class="line">git remote add 别名 地址</span><br><span class="line">	例如： git remote add gitDemo https://github.com/xiaowodi/gitDemo.git</span><br><span class="line">didi@bogon gitDemo$ git remote -v</span><br><span class="line">didi@bogon gitDemo$ git remote add gitDemo https://github.com/xiaowodi/gitDemo.git</span><br><span class="line">didi@bogon gitDemo$ git remote -v</span><br><span class="line">gitDemo	https://github.com/xiaowodi/gitDemo.git (fetch)</span><br><span class="line">gitDemo	https://github.com/xiaowodi/gitDemo.git (push)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="本地库-push-代码-到-远程库"><a href="#本地库-push-代码-到-远程库" class="headerlink" title="本地库 push 代码 到 远程库"></a>本地库 push 代码 到 远程库</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git push 远程库https 远程库分支</span><br><span class="line">didi@bogon gitDemo$ git push gitDemo master</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="拉去远程库到本地库（拉取需要登录账号）"><a href="#拉去远程库到本地库（拉取需要登录账号）" class="headerlink" title="拉去远程库到本地库（拉取需要登录账号）"></a>拉去远程库到本地库（拉取需要登录账号）</h4><p>当远程库进行修改了之后，而本地库没有被修改时，可以通过pull，将远程库拉取到本地</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash">git pull 远程库地址 分支</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git pull gitDemo	master</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><font color=red>pull 可以将远程库下修改之后的文件内容 拉去到本地</font>  可以将远程库与本地库保持同步，使得<strong>本地库的转态保持最新状态</strong></p>
+<p>​            <font color=red>而clone + 远程地址：这种方式只能表面的文件，如果原始文件存在，那么 即使远程库修改了内容，通过clone也不会将变化的内容克隆到本地</font></p>
+<p>git pull 作用是，取回远程主机某个分支的更新，再与本地的指定分支合并。它的完整格式稍稍有点复杂。</p>
+<blockquote>
+<p>eg:$ git pull ##远程主机（origin） #远程分支(next)#：#本地分支(master)#</p>
+<p>如果远程分支是与当前分支合并，则冒号后面的部分可以省略。 eg:$ git pull #远程主机(origin)#　 #远程分之(next)#</p>
+</blockquote>
+<h4 id="克隆远程库"><a href="#克隆远程库" class="headerlink" title="克隆远程库"></a>克隆远程库</h4><p>克隆公共仓库的代码，不需要登录账号的</p>
+<p>克隆可以在任意的文件夹下，将远程库的代码克隆到本地库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">mkdir</span> newgitDemo</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">cd</span> newgitDemo</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/xiaowodi/gitDemo.git</span></span><br></pre></td></tr></table></figure>
+
+<p>克隆之后，克隆下来的文件夹就自动的配置了git的配置，就连远程库的别名都已经起好了</p>
+<p>克隆大致会经历的三个步骤：</p>
+<pre><code>1. 拉去代码
+2. 初始化本地仓库
+3. 创建远程库地址别名
+</code></pre>
+<h3 id="日常push的主要步骤"><a href="#日常push的主要步骤" class="headerlink" title="日常push的主要步骤"></a>日常push的主要步骤</h3><p>如果本地库的想要push的版本，低于远程库的版本，那么push是被拒绝的，</p>
+<p>一定要保证本地库的版本要高于远程库的版本</p>
+<p><font color=red>一般需要先pull远程库的代码，将远程库最新的版本拉取到本地库，然后在此基础上进行修改，提交，最后在push到远程库进行合并</font></p>
+<p><font color=green>在拉取远程库代码的过程中：如果远程库的代码与本地库的代码不一致，会自动合并，如果自动合并失败，还会涉及到手动解决冲突的问题</font></p>
+<h3 id="Git内部原理"><a href="#Git内部原理" class="headerlink" title="Git内部原理"></a>Git内部原理</h3><h4 id="git目录结构"><a href="#git目录结构" class="headerlink" title=".git目录结构"></a>.git目录结构</h4><p>4个重要的条目：HEAD文件、（尚未创建的）index文件、objects目录、refs目录。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">didi@localhost LeetCode-Daily$ ls -al .git</span><br><span class="line">total 64</span><br><span class="line">drwxr-xr-x  16 didi  staff   512  5 23 14:33 .</span><br><span class="line">drwxr-xr-x   8 didi  staff   256  5 23 11:35 ..</span><br><span class="line">-rw-r--r--   1 didi  staff    12  5 23 11:58 COMMIT_EDITMSG</span><br><span class="line">-rw-r--r--   1 didi  staff   205  5 23 00:44 FETCH_HEAD</span><br><span class="line">-rw-r--r--   1 didi  staff    25  5 23 10:59 HEAD							#####   HEAD文件指向目前被检出的分支   #####</span><br><span class="line">-rw-r--r--   1 didi  staff    41  5 23 11:09 ORIG_HEAD</span><br><span class="line">-rw-r--r--   1 didi  staff   483  5 23 11:35 config						#	config文件包含项目特有的配置选项。</span><br><span class="line">-rw-r--r--   1 didi  staff    73  5 23 00:24 description			#	description文件仅供gitWeb程序使用</span><br><span class="line">drwxr-xr-x  15 didi  staff   480  5 23 00:24 hooks						# hooks目录包含客户端或服务端的钩子脚本（hook script）</span><br><span class="line">-rw-r--r--   1 didi  staff   916  5 23 11:58 index						#</span><br><span class="line">drwxr-xr-x   3 didi  staff    96  5 23 14:34 info							# info 目录包含一个全局性排除（global exclude）文件，用以放置那些不希望被记录在.gitignore文件中的忽略模式（ignored patterns）。</span><br><span class="line">drwxr-xr-x   4 didi  staff   128  5 23 00:24 logs</span><br><span class="line">drwxr-xr-x   3 didi  staff    96  5 23 11:35 modules</span><br><span class="line">drwxr-xr-x  55 didi  staff  1760  5 23 11:58 objects					#####   objects目录存储所有数据内容   #####</span><br><span class="line">-rw-r--r--   1 didi  staff   182  5 23 00:24 packed-refs</span><br><span class="line">drwxr-xr-x   6 didi  staff   192  5 23 11:11 refs							#####   refs目录存储指向数据（分支、远程仓库和标签等）   #####</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Git对象（objects）"><a href="#Git对象（objects）" class="headerlink" title="Git对象（objects）"></a>Git对象（objects）</h4><p>==git对象主要包括三种：数据对象（blob），树对象（tree），提交对象（commit）==</p>
+<h5 id="数据对象：blob"><a href="#数据对象：blob" class="headerlink" title="数据对象：blob"></a>数据对象：blob</h5><blockquote>
+<p>数据对象记录index（暂存区中的文件数据）</p>
+</blockquote>
+<p>Git是一个内容寻址文件系统，Git的核心部分是一个简单的键值对数据库（key-value data store）。可以想Git仓库中插入任意类型的内容，他会返回一个唯一的建，通过该键可以在任意时刻再次取回该内容。</p>
+<p><strong>git hash-objec</strong>t 可以将任意数据保存与.git/objects目录（即<strong>对象数据库</strong>，一般我们commit 对象之后的存储位置）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo &#x27;test content&#x27; | git hash-object -w --stdin</span><br><span class="line">d670460b4b4aece5915caf5c68d12f560a9fe3e4</span><br></pre></td></tr></table></figure>
+
+<p>在这种最简单的形式中，<code>git hash-object</code>会接受你传给它的东西，而它只会返回可以存储在Git仓库中的唯一键。<code>-w Actually write the object into the object database.</code>选项会指示该命令不要只返回键，还要将该对象写入数据库中。<code>--stdin</code>选项则指示该命令从标准输入读取内容；若不指定，则需在命令尾部给出待存储文件的路径。</p>
+<p>此命令输出一个长度为40个字符的校验和。这是一个SHA-1哈希值– 一个将待存储的数据外加一个头部信息（header）一起做SHA-1校验运算而得的校验和。</p>
+<p>校验和的前两个字符用于命名子目录，余下的38个字符则用作文件名。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p d670460b4b4aece5915caf5c68d12f560a9fe3e4</span></span><br><span class="line">test content</span><br></pre></td></tr></table></figure>
+
+<p>一旦你将内容存储在了对象数据库中，那么可以通过 <code>cat-file</code>命令从git那里取回数据。<code>-p</code>选项可指示该命令自动判断内容的类型。</p>
+<p>至此，目前已经介绍了如何向git中存入内容，以及如何将他们取出。接下来，模拟对一个文件进行简单的版本控制。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># </span><span class="language-bash">1.首先创建一个新文件并将其内容存入数据库：</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&#x27;version 1&#x27;</span> &gt; test.txt</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git hash-object -w test.txt</span></span><br><span class="line">83baae61804e65cc73a7201a7252750c76066a30	</span><br><span class="line"><span class="meta"># </span><span class="language-bash">2.向文件中添加内容并将其内容存入数据库</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&#x27;version 2&#x27;</span> &gt; test.txt</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git hash-object -w test.txt</span></span><br><span class="line">1f7a7a472abf3dd9643fd615f6da379c4acb3e3a	# 文件内容发生改变，其键值对的键值就会发生改变</span><br><span class="line"><span class="meta"># </span><span class="language-bash">3.从新提交为改变的文件，测试结果如何</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git hash-object -w test.txt</span></span><br><span class="line">1f7a7a472abf3dd9643fd615f6da379c4acb3e3a	# 如果文件没有发生变化，内容没有变化，重新添加文件，会返回和上次相同的key</span><br><span class="line"><span class="meta"># </span><span class="language-bash">再来看看.git的目录变化</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">tree .git/</span></span><br><span class="line">.git/</span><br><span class="line">├── HEAD</span><br><span class="line">├── config</span><br><span class="line">├── description</span><br><span class="line">├── hooks</span><br><span class="line">│   ├── applypatch-msg.sample</span><br><span class="line">│   ├── commit-msg.sample</span><br><span class="line">│   ├── fsmonitor-watchman.sample</span><br><span class="line">│   ├── post-update.sample</span><br><span class="line">│   ├── pre-applypatch.sample</span><br><span class="line">│   ├── pre-commit.sample</span><br><span class="line">│   ├── pre-merge-commit.sample</span><br><span class="line">│   ├── pre-push.sample</span><br><span class="line">│   ├── pre-rebase.sample</span><br><span class="line">│   ├── pre-receive.sample</span><br><span class="line">│   ├── prepare-commit-msg.sample</span><br><span class="line">│   ├── push-to-checkout.sample</span><br><span class="line">│   └── update.sample</span><br><span class="line">├── info</span><br><span class="line">│   └── exclude</span><br><span class="line">├── objects																					# objects目录下多出了两个目录 1f 和 83，这两个目录的名字对应40位校验和的前两个字符</span><br><span class="line">│   ├── 1f</span><br><span class="line">│   │   └── 7a7a472abf3dd9643fd615f6da379c4acb3e3a  # 对象实际存放的位置</span><br><span class="line">│   ├── 83</span><br><span class="line">│   │   └── baae61804e65cc73a7201a7252750c76066a30	# 对象实际存放的位置</span><br><span class="line">│   ├── info</span><br><span class="line">│   └── pack</span><br><span class="line">└── refs</span><br><span class="line">    ├── heads</span><br><span class="line">    └── tags</span><br><span class="line"></span><br><span class="line">10 directories, 19 files</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">4.然后我们在本地删除这个文件</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">ls</span></span></span><br><span class="line">test.txt</span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">rm</span> test.txt</span> </span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">ls</span></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">5.接下来我们可以从git数据库中恢复任意的版本；使用git cat-file</span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">这里从第一个版本恢复</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p 83baae61804e65cc73a7201a7252750c76066a30 &gt; test.txt</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">cat</span> test.txt</span> </span><br><span class="line">version 1</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>然而，记住文件的每个版本所对应的SHA-1值并不现实；另一个问题是，在这个（简单的版本控制）系统中，文件名并没有被保存–我们仅保存了文件的内容。</p>
+<p>上述类型的对象我们称之为<strong>数据对象（blob object）</strong>。利用<code>git cat-file -t</code>命令，可以让Git告诉我们其内部存储的任何对象的类型，我们只需提供该对象的SHA-1值：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -t 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a</span></span><br><span class="line">blob</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h5 id="树对象"><a href="#树对象" class="headerlink" title="树对象"></a>树对象</h5><p>树对象能解决文件名保存的问题，也允许我们将多个文件组织到一起。所有内容均以树对象<strong>tree</strong>和数据对象<strong>blob</strong>的形式存储，其中树对象对应了unix中的目录项。</p>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p master^&#123;tree&#125;</span></span><br><span class="line">100644 blob a906cb2a4a904a152e80877d4088654daad0c859		README		# 数据对象	代表一个文件数据</span><br><span class="line">100644 blob 8f94139338f9404f26296befa88755fc2598c289		Rakefile	# 数据对象</span><br><span class="line">040000 tree 99f1a6d12cb4b6f19c8655fca46c3ecf317074e0		lib				# tree 树对象 	代表一个目录</span><br></pre></td></tr></table></figure>
+
+<p><font color=green>master^{tree}</font> 语法表示<font color=green> master </font>分支上最新的提交所指向的树对象</p>
+<p>第一列为文件模式：</p>
+<table>
+<thead>
+<tr>
+<th>文件模式</th>
+<th>说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>100644</td>
+<td>表明这是一个普通文件</td>
+<td></td>
+</tr>
+<tr>
+<td>100755</td>
+<td>表示一个可执行 文件</td>
+<td></td>
+</tr>
+<tr>
+<td>120000</td>
+<td>表示一个符号链接</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>上述三种文件模式即为git文件的所有模式（参考unix的文件格式）</td>
+</tr>
+<tr>
+<td>040000</td>
+<td>表示一个目录项</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>第二列表示树对象中节点的类型</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>blob</td>
+<td>节点数据，表示该节点是一个文件数据</td>
+<td></td>
+</tr>
+<tr>
+<td>tree</td>
+<td>树数据，表示该节点是一个目录项</td>
+<td></td>
+</tr>
+</tbody></table>
+<h6 id="Git-内部存储的数据（tree对象）"><a href="#Git-内部存储的数据（tree对象）" class="headerlink" title="Git 内部存储的数据（tree对象）"></a>Git 内部存储的数据（tree对象）</h6><p><img src="https://github.com/xiaowodi/Resources/blob/main/images/gitImages/3.png?raw=true" alt="3.png"></p>
+<h6 id="底层命令"><a href="#底层命令" class="headerlink" title="底层命令"></a>底层命令</h6><p><font color=blue>特此说明：</font></p>
+<ul>
+<li>我们每次commit提交后的数据，都会存储成树对象，每次提交后会自动的在objects目录下创建两个对象（tree对象 和 commit对象）</li>
+<li>添加到暂存区中的数据，会在objects下创建一个blob类型的数据对象，记录文件的内容</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>blob对象</th>
+<th>记录index暂存区中文件的实际内容</th>
+<th><strong>$</strong> git cat-file -p 3b18e512dba79e4c8300dd08aeb37f8e728b8dad<br />hello world</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>树对象</td>
+<td>记录了提交的暂存区中的文件信息（包括类型，SHA-1值和文件名）</td>
+<td><strong>$</strong> git cat-file -p c3b8bb102afeca86037d5b5dd89ceeb0090eae9d<br />100644 blob 3b18e512dba79e4c8300dd08aeb37f8e728b8dad    test.txt</td>
+</tr>
+<tr>
+<td>commit对象</td>
+<td>记录了提交信息</td>
+<td><strong>$</strong> git cat-file -p 27edfec26df5483fc78e009e446fc063891989e3<br />tree c3b8bb102afeca86037d5b5dd89ceeb0090eae9d<br />author yulu <a href="mailto:&#50;&#x37;&#50;&#x33;&#x39;&#52;&#x36;&#x32;&#x38;&#57;&#x40;&#113;&#113;&#46;&#x63;&#111;&#x6d;">&#50;&#x37;&#50;&#x33;&#x39;&#52;&#x36;&#x32;&#x38;&#57;&#x40;&#113;&#113;&#46;&#x63;&#111;&#x6d;</a> 1623757703 +0800<br />committer yulu <a href="mailto:&#50;&#55;&#50;&#x33;&#x39;&#52;&#54;&#50;&#x38;&#x39;&#x40;&#x71;&#113;&#x2e;&#99;&#x6f;&#x6d;">&#50;&#55;&#50;&#x33;&#x39;&#52;&#54;&#50;&#x38;&#x39;&#x40;&#x71;&#113;&#x2e;&#99;&#x6f;&#x6d;</a> 1623757703 +0800<br /><br />first commit</td>
+</tr>
+</tbody></table>
+<p>代码小结：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="language-bash"><span class="comment">#############################</span></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">数据对象</span></span><br><span class="line"><span class="meta">#</span><span class="language-bash"><span class="comment">#############################</span></span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">1. 创建gitTest目录 并 切换到次目录</span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">2. git init初始化一个git项目</span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">3. tree命令查看.git目录</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">tree .git/</span></span><br><span class="line">.git/</span><br><span class="line">├── HEAD</span><br><span class="line">├── config</span><br><span class="line">├── description</span><br><span class="line">├── hooks</span><br><span class="line">│   ├── ...........</span><br><span class="line">├── info</span><br><span class="line">│   └── exclude</span><br><span class="line">├── objects</span><br><span class="line">│   ├── info</span><br><span class="line">│   └── pack</span><br><span class="line">└── refs</span><br><span class="line">    ├── heads</span><br><span class="line">    └── tags</span><br><span class="line"></span><br><span class="line">8 directories, 17 files</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">4. 通过git hash-object 创建 数据对象blob</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&#x27;version 1&#x27;</span> &gt; test.txt <span class="comment"># 先创建一个文件（相当于我们在工作区创建了一个文件）</span></span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git hash-object -w test.txt	<span class="comment"># -w 选项表示 将对象写入git的对象数据库</span></span></span><br><span class="line">83baae61804e65cc73a7201a7252750c76066a30  # 对象的SHA-1编码：前两位 83 代表对象存储的实际目录</span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p 83baae61804e65cc73a7201a7252750c76066a30	<span class="comment"># git cat-file 查看实际对象数据库中的对象，-p 显示内容</span></span></span><br><span class="line">version 1</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">接下来，我们往工作区总的test.txt中添加一段内容</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&#x27;version 2&#x27;</span> &gt; test.txt</span> </span><br><span class="line"><span class="meta"># </span><span class="language-bash">5. 再通过git hash-object将更改后的文件存储到对象数据库中</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git hash-object -w test.txt</span></span><br><span class="line">1f7a7a472abf3dd9643fd615f6da379c4acb3e3a</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">我们来看看底层是如何存储对象的</span></span><br><span class="line">.git/</span><br><span class="line">├── HEAD</span><br><span class="line">├── config</span><br><span class="line">├── description</span><br><span class="line">├── hooks</span><br><span class="line">│   ├── .....................</span><br><span class="line">├── info</span><br><span class="line">│   └── exclude</span><br><span class="line">├── objects</span><br><span class="line">│   ├── 1f</span><br><span class="line">│   │   └── 7a7a472abf3dd9643fd615f6da379c4acb3e3a  # 对应于我们更改后的第二个版本的test.txt文件</span><br><span class="line">│   ├── 83</span><br><span class="line">│   │   └── baae61804e65cc73a7201a7252750c76066a30	# 对应于我们更改后的第一个版本的test.txt文件</span><br><span class="line">│   ├── info</span><br><span class="line">│   └── pack</span><br><span class="line">└── refs</span><br><span class="line">    ├── heads</span><br><span class="line">    └── tags</span><br><span class="line"></span><br><span class="line">10 directories, 19 files</span><br><span class="line"><span class="meta"># </span><span class="language-bash">通过上述存储在对象数据库中的信息，可以随时恢复工作区中的内容</span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">6. 例如：我们将工作区中的第二版的test.txt删除，然后恢复至第一个版本</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">rm</span> test.txt</span> </span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p 83baae61804e65cc73a7201a7252750c76066a30 &gt; test.txt</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">cat</span> test.txt</span>   </span><br><span class="line">version 1    # 恢复至第一个版本</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">cat-file -t 选项可以查看对象的类型</span></span><br><span class="line">git cat-file -t 83baae61804e65cc73a7201a7252750c76066a30</span><br><span class="line">blob		# blob 数据对象</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="language-bash"><span class="comment">#############################</span></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">树对象： 能够解决文件名保存的问题 <span class="comment">#</span></span> </span><br><span class="line"><span class="meta"># </span><span class="language-bash">通常情况下，Git根据某一时刻暂存区所表示的状态创建并记录一个对象的树对象；换句话说，创建一个树对象，我们首先要暂存一些文件（对象）</span></span><br><span class="line"><span class="meta">#</span><span class="language-bash"><span class="comment">#############################</span></span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">暂存对象数据库中的对象，通过 git update-index命令来实现</span></span><br><span class="line"> --add                 不忽略新的文件</span><br><span class="line">--cacheinfo &lt;存取模式&gt;,&lt;对象&gt;,&lt;路径&gt;</span><br><span class="line">                          添加指定的条目到索引区</span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git update-index --add --cacheinfo 100644 83baae61804e65cc73a7201a7252750c76066a30 test.txt <span class="comment"># 将第一个版本的数据添加到暂存区test.txt文件中</span></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">通过status来验证暂存区中的内容</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git status</span></span><br><span class="line">位于分支 master</span><br><span class="line"></span><br><span class="line">尚无提交</span><br><span class="line"></span><br><span class="line">要提交的变更：</span><br><span class="line">  （使用 &quot;git rm --cached &lt;文件&gt;...&quot; 以取消暂存）</span><br><span class="line">	新文件：   test.txt	# 暂存区中新增了test.txt文件</span><br><span class="line"><span class="meta"># </span><span class="language-bash">7. 调用git write-tree 命令，自动将暂存区中的内容写入一个树对象中</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git write-tree</span></span><br><span class="line">d8329fc1cc938780ffdd9f94e0d364e0ea74f579</span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p d8329fc1cc938780ffdd9f94e0d364e0ea74f579</span></span><br><span class="line">100644 blob 83baae61804e65cc73a7201a7252750c76066a30	test.txt  # 树对象内容的基本格式</span><br><span class="line"><span class="meta"># </span><span class="language-bash">查看一下这个对象的git对象类型</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -t d8329fc1cc938780ffdd9f94e0d364e0ea74f579</span></span><br><span class="line">tree</span><br><span class="line"><span class="meta"># </span><span class="language-bash">查看objects目录</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">tree .git/</span></span><br><span class="line">.git/</span><br><span class="line">├── HEAD</span><br><span class="line">├── config</span><br><span class="line">├── description</span><br><span class="line">├── hooks</span><br><span class="line">│   ├── ............................</span><br><span class="line">├── index</span><br><span class="line">├── info</span><br><span class="line">│   └── exclude</span><br><span class="line">├── objects</span><br><span class="line">│   ├── 1f</span><br><span class="line">│   │   └── 7a7a472abf3dd9643fd615f6da379c4acb3e3a</span><br><span class="line">│   ├── 83</span><br><span class="line">│   │   └── baae61804e65cc73a7201a7252750c76066a30 </span><br><span class="line">│   ├── d8</span><br><span class="line">│   │   └── 329fc1cc938780ffdd9f94e0d364e0ea74f579 # 树对象跟blob对象都是以相同的形式存储在objects中</span><br><span class="line">│   ├── info</span><br><span class="line">│   └── pack</span><br><span class="line">└── refs</span><br><span class="line">    ├── heads</span><br><span class="line">    └── tags</span><br><span class="line"></span><br><span class="line">11 directories, 21 files</span><br><span class="line"><span class="meta"># </span><span class="language-bash">接下来创建一个新的树对象，它包括 test.txt 文件的第二个版本，以及一个新的文件：</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&#x27;new file&#x27;</span> &gt; new.txt</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git update-index --add --cacheinfo 100644 \ 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a test.txt</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git update-index --add new.txt</span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">查看git的当前状态</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git status   <span class="comment"># 包括一个修改的test.txt和一个新文件new.txt</span></span></span><br><span class="line">位于分支 master</span><br><span class="line"></span><br><span class="line">尚无提交</span><br><span class="line"></span><br><span class="line">要提交的变更：</span><br><span class="line">  （使用 &quot;git rm --cached &lt;文件&gt;...&quot; 以取消暂存）</span><br><span class="line">	新文件：   new.txt</span><br><span class="line">	新文件：   test.txt</span><br><span class="line"></span><br><span class="line">尚未暂存以备提交的变更：</span><br><span class="line">  （使用 &quot;git add &lt;文件&gt;...&quot; 更新要提交的内容）</span><br><span class="line">  （使用 &quot;git restore &lt;文件&gt;...&quot; 丢弃工作区的改动）</span><br><span class="line">	修改：     test.txt</span><br><span class="line"><span class="meta"># </span><span class="language-bash">8.创建新的tree对象，这个对象中包含两个暂存区中的文件</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git write-tree</span></span><br><span class="line">0155eb4229851634a0f03eb265b69f5a2d56f341</span><br><span class="line"><span class="meta"># </span><span class="language-bash">查看它的内容</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p 0155eb4229851634a0f03eb265b69f5a2d56f341			<span class="comment"># 一个tree对象包含了两个blob对象</span></span></span><br><span class="line">100644 blob fa49b077972391ad58037050f2a75f74e3671e92	new.txt</span><br><span class="line">100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a	test.txt</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">git read-tree 是write-tree的反向操作，可将一个树对象读取到暂存区中</span></span><br><span class="line"> --prefix &lt;子目录&gt;/    读取树对象到索引的 &lt;子目录&gt;/ 下</span><br><span class="line"><span class="meta"># </span><span class="language-bash">9. 通过read-tree命令将第一个版本test.txt对应的树对象d8329fc1cc938780ffdd9f94e0d364e0ea74f579 读取到暂存区bak目录下</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git read-tree --prefix=bak d8329fc1cc938780ffdd9f94e0d364e0ea74f579</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git status</span></span><br><span class="line">位于分支 master</span><br><span class="line"></span><br><span class="line">尚无提交</span><br><span class="line"></span><br><span class="line">要提交的变更：</span><br><span class="line">  （使用 &quot;git rm --cached &lt;文件&gt;...&quot; 以取消暂存）</span><br><span class="line">	新文件：   bak/test.txt</span><br><span class="line">	新文件：   new.txt</span><br><span class="line">	新文件：   test.txt</span><br><span class="line"><span class="meta"># </span><span class="language-bash">此时暂存区中有三个文件，其中test.txt一版的存储在bak目录下</span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">10.再创建树对象</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git write-tree</span></span><br><span class="line">3c4e9cd789d88d8d89c1073707c3585e41b0e614</span><br><span class="line"><span class="meta"># </span><span class="language-bash">查看这个树对象的内容</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p 3c4e9cd789d88d8d89c1073707c3585e41b0e614</span></span><br><span class="line">040000 tree d8329fc1cc938780ffdd9f94e0d364e0ea74f579	bak  		# 如果存在目录，那么就会再创建一个树对象</span><br><span class="line">100644 blob fa49b077972391ad58037050f2a75f74e3671e92	new.txt</span><br><span class="line">100644 blob 1f7a7a472abf3dd9643fd615f6da379c4acb3e3a	test.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>代码中第10步的树对象3c4e9cd789d88d8d89c1073707c3585e41b0e614对应的结构示意图</p>
+<p><img src="https://github.com/xiaowodi/Resources/blob/main/images/gitImages/4.png?raw=true" alt="4.png"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="language-bash"><span class="comment">#########################</span></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">虽然此时，底层已经通过树对象把对象保存起来了，但是是不是感觉缺了点什么？</span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">正常我们提交一次暂存区中的内容，不只是把对象存储起来而已，我们还会附带一些提交信息，这些提交信息Git通过提交对象进行存储。</span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">提交对象commit</span></span><br><span class="line"><span class="meta">#</span><span class="language-bash"><span class="comment">#########################</span></span></span><br><span class="line"><span class="meta"># </span><span class="language-bash">创建提交对象commit，可以通过 git commit-tree SHA-1值进行创建</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&#x27;first commit&#x27;</span> | git commit-tree d8329fc1cc938780ffdd9f94e0d364e0ea74f579</span></span><br><span class="line">f5f0cda7464b026ddb429129224cd58138555bfb</span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p f5f0cda7464b026ddb429129224cd58138555bfb</span></span><br><span class="line">tree d8329fc1cc938780ffdd9f94e0d364e0ea74f579</span><br><span class="line">author yulu &lt;2723946289@qq.com&gt; 1623930083 +0800</span><br><span class="line">committer yulu &lt;2723946289@qq.com&gt; 1623930083 +0800</span><br><span class="line"></span><br><span class="line">first commit</span><br><span class="line"><span class="meta"># </span><span class="language-bash">第二次提交， -p 选项指定父提交</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&#x27;second commit&#x27;</span> | git commit-tree 0155eb -p f5f0cda7464b026ddb429129224cd58138555bfb</span></span><br><span class="line">cbeda08bbfc505e2f029fe7bdd4e32af8f60a33c</span><br><span class="line"><span class="meta"># </span><span class="language-bash">查看第二次提交的对象</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git cat-file -p cbeda08bbfc505e2f029fe7bdd4e32af8f60a33c</span></span><br><span class="line">tree 0155eb4229851634a0f03eb265b69f5a2d56f341</span><br><span class="line">parent f5f0cda7464b026ddb429129224cd58138555bfb</span><br><span class="line">author yulu &lt;2723946289@qq.com&gt; 1623930720 +0800</span><br><span class="line">committer yulu &lt;2723946289@qq.com&gt; 1623930720 +0800</span><br><span class="line"></span><br><span class="line">second commit</span><br><span class="line"><span class="meta"># </span><span class="language-bash">第三次提交的对象</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">echo</span> <span class="string">&#x27;third commit&#x27;</span>  | git commit-tree 3c4e9c -p cbeda0</span></span><br><span class="line">c759b5a289338e9d55333ff7900fdc4ee0526c33</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="language-bash"><span class="comment">## ###</span></span></span><br><span class="line"><span class="meta">#</span><span class="language-bash">通过上述操作，已经创建了3个commit对象</span></span><br><span class="line"><span class="meta">#</span><span class="language-bash"><span class="comment">## ###</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/24/Docker%E5%AD%A6%E4%B9%A0/" rel="prev" title="Docker入门学习">
+      <i class="fa fa-chevron-left"></i> Docker入门学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/06/24/Netty%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="Netty通讯框架">
+      Netty通讯框架 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">Git介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">Git安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">Git命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E7%A9%BF%E6%A2%AD"><span class="nav-number">4.</span> <span class="nav-text">版本穿梭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E5%88%86%E6%94%AF"><span class="nav-number">5.</span> <span class="nav-text">Git分支</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E5%86%B2%E7%AA%81"><span class="nav-number">5.1.</span> <span class="nav-text">分支冲突</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C%E6%9C%BA%E5%88%B6"><span class="nav-number">6.</span> <span class="nav-text">Git 团队协作机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%A2%E9%98%9F%E5%86%85%E5%8D%8F%E4%BD%9C"><span class="nav-number">6.1.</span> <span class="nav-text">团队内协作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%A8%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C"><span class="nav-number">6.2.</span> <span class="nav-text">跨团队协作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E5%BA%93%E5%88%9B%E5%BB%BA%E5%88%AB%E5%90%8D"><span class="nav-number">6.3.</span> <span class="nav-text">远程库创建别名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%BA%93-push-%E4%BB%A3%E7%A0%81-%E5%88%B0-%E8%BF%9C%E7%A8%8B%E5%BA%93"><span class="nav-number">6.4.</span> <span class="nav-text">本地库 push 代码 到 远程库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%89%E5%8E%BB%E8%BF%9C%E7%A8%8B%E5%BA%93%E5%88%B0%E6%9C%AC%E5%9C%B0%E5%BA%93%EF%BC%88%E6%8B%89%E5%8F%96%E9%9C%80%E8%A6%81%E7%99%BB%E5%BD%95%E8%B4%A6%E5%8F%B7%EF%BC%89"><span class="nav-number">6.5.</span> <span class="nav-text">拉去远程库到本地库（拉取需要登录账号）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%8B%E9%9A%86%E8%BF%9C%E7%A8%8B%E5%BA%93"><span class="nav-number">6.6.</span> <span class="nav-text">克隆远程库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%B8%B8push%E7%9A%84%E4%B8%BB%E8%A6%81%E6%AD%A5%E9%AA%A4"><span class="nav-number">7.</span> <span class="nav-text">日常push的主要步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86"><span class="nav-number">8.</span> <span class="nav-text">Git内部原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#git%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">8.1.</span> <span class="nav-text">.git目录结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git%E5%AF%B9%E8%B1%A1%EF%BC%88objects%EF%BC%89"><span class="nav-number">8.2.</span> <span class="nav-text">Git对象（objects）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1%EF%BC%9Ablob"><span class="nav-number">8.2.1.</span> <span class="nav-text">数据对象：blob</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A0%91%E5%AF%B9%E8%B1%A1"><span class="nav-number">8.2.2.</span> <span class="nav-text">树对象</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Git-%E5%86%85%E9%83%A8%E5%AD%98%E5%82%A8%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%88tree%E5%AF%B9%E8%B1%A1%EF%BC%89"><span class="nav-number">8.2.2.1.</span> <span class="nav-text">Git 内部存储的数据（tree对象）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%BA%95%E5%B1%82%E5%91%BD%E4%BB%A4"><span class="nav-number">8.2.2.2.</span> <span class="nav-text">底层命令</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
